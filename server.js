@@ -2002,9 +2002,10 @@ var RoomManager = class {
 // server/src/voice.ts
 import { AccessToken } from "livekit-server-sdk";
 var voiceConfig = {
-  url: process.env.LIVEKIT_URL ?? "",
-  apiKey: process.env.LIVEKIT_API_KEY ?? "",
-  apiSecret: process.env.LIVEKIT_API_SECRET ?? "",
+  // trim() : un espace ou un retour à la ligne collé par erreur casse la signature des jetons
+  url: (process.env.LIVEKIT_URL ?? "").trim().replace(/^https:/, "wss:").replace(/\/+$/, ""),
+  apiKey: (process.env.LIVEKIT_API_KEY ?? "").trim(),
+  apiSecret: (process.env.LIVEKIT_API_SECRET ?? "").trim(),
   get enabled() {
     return Boolean(this.url && this.apiKey && this.apiSecret);
   }
